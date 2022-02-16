@@ -1,0 +1,28 @@
+﻿@model IEnumerable<FinalMPA.Models.StoreViewModels.OrderGroup>
+
+    @{
+     ViewData["Title"] = "Ordered Magazines Statistics";
+    }
+    <h2>Ordered Magazines Statistics</h2>
+
+    <table>
+     <tr>
+     <th>
+     Order Date
+     </th>
+     <th>
+     Ordered Magazines
+     </th>
+     </tr>
+     @foreach (var item in Model)
+     {
+     <tr>
+     <td>
+     @Html.DisplayFor(modelItem => item.OrderDate)
+     </td>
+     <td>
+     @item.MagazineCount
+     </td>
+     </tr>
+     }
+    </table>
