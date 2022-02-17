@@ -8,9 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using FinalMPA.Data;
 using FinalMPA.Models;
 using FinalMPA.Models.StoreViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinalMPA.Controllers
 {
+    [Authorize(Policy = "OnlySales")]
+
     public class PublishersController : Controller
     {
         private readonly StoreContext _context;

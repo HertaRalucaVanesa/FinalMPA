@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using FinalMPA.Data;
 using Microsoft.EntityFrameworkCore;
 using FinalMPA.Hubs;
+using Microsoft.AspNetCore.Identity;
+using FinalMPA.Models;
 
 namespace FinalMPA
 {
@@ -26,9 +28,33 @@ namespace FinalMPA
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ExpenseContext>(opt => opt.UseInMemoryDatabase("ExpenseList"));
             services.AddControllersWithViews();
             services.AddDbContext<StoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSignalR();
+            services.AddRazorPages();
+            services.Configure<IdentityOptions>(options => {
+
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 3;
+                options.Lockout.AllowedForNewUsers = true;
+            });
+            services.AddAuthorization(opts => {
+                opts.AddPolicy("OnlySales", policy => {
+                    policy.RequireClaim("Department", "Sales");
+                });
+            });
+            services.AddAuthorization(opts => {
+                opts.AddPolicy("SalesManager", policy => {
+                    policy.RequireRole("Manager");
+                    policy.RequireClaim("Department", "Sales");
+                });
+            });
+            services.ConfigureApplicationCookie(opts =>
+            {
+                opts.AccessDeniedPath = "/Identity/Account/AccessDenied";
+
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

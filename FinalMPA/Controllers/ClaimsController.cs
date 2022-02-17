@@ -42,12 +42,9 @@ namespace FinalMPA.Controllers
         {
             IdentityUser user = await userManager.GetUserAsync(HttpContext.User);
             string[] claimValuesArray = claimValues.Split(";");
-            string claimType = claimValuesArray[0], claimValue =
-           claimValuesArray[1], claimIssuer = claimValuesArray[2];
-            Claim claim = User.Claims.Where(x => x.Type == claimType &&
-           x.Value == claimValue && x.Issuer == claimIssuer).FirstOrDefault();
-            IdentityResult result = await
-           userManager.RemoveClaimAsync(user, claim);
+            string claimType = claimValuesArray[0], claimValue = claimValuesArray[1], claimIssuer = claimValuesArray[2];
+            Claim claim = User.Claims.Where(x => x.Type == claimType && x.Value == claimValue && x.Issuer == claimIssuer).FirstOrDefault();
+            IdentityResult result = await userManager.RemoveClaimAsync(user, claim);
             if (result.Succeeded)
                 return RedirectToAction("Index");
             else

@@ -20,8 +20,7 @@
     <td>@claim.Value</td>
     <td>
         <form asp-action="Delete" method="post">
-            <input type="hidden" name="claimValues"
-                   value="@claim.Type;@claim.Value;@claim.Issuer" />
+            <input type="hidden" name="claimValues" value="@claim.Type;@claim.Value;@claim.Issuer" />
             <button type="submit" class="btn btn-sm btn-danger">
                 Delete
             </button>

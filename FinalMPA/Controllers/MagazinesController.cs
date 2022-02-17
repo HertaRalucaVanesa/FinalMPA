@@ -7,9 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FinalMPA.Data;
 using FinalMPA.Models;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace FinalMPA.Controllers
 {
+    [Authorize(Roles = "Employee")]
+
     public class MagazinesController : Controller
     {
         private readonly StoreContext _context;
@@ -20,11 +24,8 @@ namespace FinalMPA.Controllers
         }
 
         // GET: Magazines
-        public async Task<IActionResult> Index(
- string sortOrder,
- string currentFilter,
- string searchString,
- int? pageNumber)
+        [AllowAnonymous]
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["TitleSortParm"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
@@ -65,6 +66,7 @@ namespace FinalMPA.Controllers
         }
 
         // GET: Magazines/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
